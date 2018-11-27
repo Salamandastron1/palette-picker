@@ -22,6 +22,8 @@ Colors choices are saved to a project on the backend server so you can come back
 
 `npm test` from the associated root directory
 
+### Next Steps
+
 ### Wireframes
 
 ![Wireframes](./public/wireframe.png)
