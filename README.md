@@ -13,8 +13,8 @@ Colors choices are saved to a project on the backend server so you can come back
 * Sass
 
 ### Inspiration
-[Color Selection] (https://dribbble.com/shots/3764155-Colors-Cafe-WIP)
-[Completed Palettes] (https://codepen.io/Volorf/pen/GqzzRJ)
+* [Color Selection](https://dribbble.com/shots/3764155-Colors-Cafe-WIP)
+* [Completed Palettes](https://codepen.io/Volorf/pen/GqzzRJ)
 
 ### Setup
 
