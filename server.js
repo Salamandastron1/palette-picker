@@ -2,20 +2,22 @@ const express = require('express')
 const app = express()
 const path = require('path')
 const bodyParser = require('body-parser')
-const uuidv4 = require('uuid/v4')
+const environment = process.env.NODE_ENV || 'development'
+const config = require('./knexfile')[environment]
+const database = require('knex')(config)
 
 app.use(express.static('public'))
 app.use(bodyParser.json())
 app.set('port', process.env.PORT || 3000);
 
-app.locals.title = 'Palette Picker'
-app.locals.projects = [{name: 'meow', id: 4}];
-app.locals.palettes = [];
-
 app.get('/api/v1/projects',(request, response) => {
-  const projects = app.locals.projects.map(project => project)
-
-  return response.json(projects)
+  database('projects').select()
+    .then(projects => {
+      response.json(projects)
+    })
+    .catch(error => {
+      response.status(500).json({error: error.message})
+    })
 })
 
 app.get('/api/v1/projects/:id', (request, response) => {
@@ -73,6 +75,7 @@ app.post('/api/v1/projects/:project_id/palettes',(request, response) => {
   return response.status(201).json(newPalette)
 })
 
-app.listen(app.get('port'), () => {
-  console.log(`${app.locals.title} is running on port ${app.get('port')}`);
+
+app.listen(3000, () => {
+  console.log('app is running on 3000');
 });
