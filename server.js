@@ -27,13 +27,13 @@ app.post('/api/v1/projects', (request, response) => {
   if(!project) {
     return response.status(422).json({error: 'No project object provided'});
   };
-  for(let requiredParameter in ['name'] {
+  for(let requiredParameter in ['name']) {
     if(project[requiredParameter]) {
       return response.status(422).json({
         error: `Expected format: {name: <STRING>}. Missing the requiredParameter of ${requiredParameter}`
       });
     };
-  });
+  };
 
   app.locals.projects.push({id, ...project});
 
@@ -41,5 +41,5 @@ app.post('/api/v1/projects', (request, response) => {
 });
 
 app.listen(app.get('port'), () => {
-  console.log(`${app.locals.title} is running on ${app.get('port')}`);
+  console.log(`${app.locals.title} is running on port ${app.get('port')}`);
 });
