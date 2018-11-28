@@ -30,7 +30,7 @@ Colors choices are saved to a project on the backend server so you can come back
 
 ### Wireframes
 
-![Wireframes](./public/wireframe.png)
+![Wireframes](./public/assets/wireframe.png)
 
 ### Screenshots
 

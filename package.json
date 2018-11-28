@@ -1,0 +1,25 @@
+{
+  "name": "color-picker",
+  "version": "1.0.0",
+  "description": "[![Waffle.io Columns and their card count](https://badge.waffle.io/Salamandastron1/palette-picker.svg?columns=all)](https://waffle.io/Salamandastron1/palette-picker)<br> Palette Picker lets you sort through the colors of the rainbow to find pleasing combinations. Lock colors that you like until you pick a perfectly presented palette.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Salamandastron1/palette-picker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Salamandastron1/palette-picker/issues"
+  },
+  "homepage": "https://github.com/Salamandastron1/palette-picker#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4"
+  }
+}
