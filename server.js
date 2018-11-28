@@ -21,16 +21,16 @@ app.get('/api/v1/projects',(request, response) => {
 })
 
 app.get('/api/v1/projects/:id', (request, response) => {
-  const requestId = parseInt(request.params.id)
-  const foundProject = app.locals.projects.find(project => project.id === requestId)
+  const { id } = request.params
 
-  return response.json(foundProject)
+  database('projects').where('id', id).select()
+    .then(project => response.json(project))
+    .catch(error => response.status(500).json({error: error.message}))
 });
 
 app.post('/api/v1/projects', (request, response) => {
   const project = request.body;
-  const id = uuidv4();
-  const newProject = {id, ...project}
+  console.log('i ran')
 
   if(!project) {
     return response.status(422).json({error: 'No project object provided'});
@@ -43,36 +43,43 @@ app.post('/api/v1/projects', (request, response) => {
     };
   };
 
-  app.locals.projects.push(newProject);
-
-  return response.status(201).json(newProject);
+  database('projects').insert(project, 'id')
+    .then(projectIds => {
+      response.status(201).json({id: projectIds[0]})
+    })
+    .catch(error => {
+      response.status(500).json({error: error.message})
+    })
 });
 
 app.get('/api/v1/projects/:project_id/palettes', (request, response) => {
-  const requestId = parseInt(request.params.id)
-  const foundPalettes = app.locals.palettes.find(palette => requestId === palette.id)
+  const id = request.params.project_id
 
-  return response.json(foundPalettes)
+  database('palettes').where('project_id', id).select()
+    .then(palettes => response.json(palettes))
+    .catch(error => response.status(500).json({error: error.message}))
 })
 
 app.post('/api/v1/projects/:project_id/palettes',(request, response) => {
   const palette = request.body;
-  const projectId = parseInt(request.params.id)
-  const id = uuidv4();
-  const newPalette = {id, projectId, ...palette}
+  const projectId = request.params.project_id
 
   if(!palette) {
     return response.status(422).json({error: 'No palette object submitted'})
   }
-  for(let requiredParameter of ['name', 'color1', 'color2', 'color3', 'color4', 'color5']) {
-    if(!project[requiredParameter]) {
-      return response.status(422).json({error: `Expected format: {name: <STRING>, color1: <STRING>, color2: <STRING>, color3: <STRING>, color4: <STRING>, color5: <STRING>}. Missing the required parameter of ${requiredParameter}`})
+  for(let requiredParameter of ['name', 'hex_1', 'hex_2', 'hex_3', 'hex_4', 'hex_5']) {
+    if(!palette[requiredParameter]) {
+      return response.status(422).json({error: `Expected format: {name: <STRING>, hex_1: <STRING>, hex_2: <STRING>, hex_3: <STRING>, hex_4: <STRING>, hex_5: <STRING>}. Missing the required parameter of ${requiredParameter}`})
     }
   }
 
-  app.locals.palettes.push(newPalette)
-
-  return response.status(201).json(newPalette)
+  database('palettes').insert(palette, 'id')
+    .then(paletteIds => {
+      response.status(201).json({id: paletteIds[0]})
+    })
+    .catch(error => {
+      response.status(500).json({ error: error.message })
+    })
 })
 
 
