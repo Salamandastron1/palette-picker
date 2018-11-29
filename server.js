@@ -30,7 +30,6 @@ app.get('/api/v1/projects/:id', (request, response) => {
 
 app.post('/api/v1/projects', (request, response) => {
   const project = request.body;
-  console.log('i ran')
 
   if(!project) {
     return response.status(422).json({error: 'No project object provided'});
@@ -55,6 +54,10 @@ app.post('/api/v1/projects', (request, response) => {
 app.get('/api/v1/projects/:project_id/palettes', (request, response) => {
   const id = request.params.project_id
 
+  if(!id) {
+    return response.status(404).json('Project does not exist')
+  }
+
   database('palettes').where('project_id', id).select()
     .then(palettes => response.json(palettes))
     .catch(error => response.status(500).json({error: error.message}))
@@ -62,7 +65,7 @@ app.get('/api/v1/projects/:project_id/palettes', (request, response) => {
 
 app.post('/api/v1/projects/:project_id/palettes',(request, response) => {
   const palette = request.body;
-  const projectId = request.params.project_id
+  const { project_id } = request.params
 
   if(!palette) {
     return response.status(422).json({error: 'No palette object submitted'})
@@ -73,13 +76,21 @@ app.post('/api/v1/projects/:project_id/palettes',(request, response) => {
     }
   }
 
-  database('palettes').insert(palette, 'id')
+  database('palettes').insert({...palette, project_id}, 'id')
     .then(paletteIds => {
       response.status(201).json({id: paletteIds[0]})
     })
     .catch(error => {
       response.status(500).json({ error: error.message })
     })
+})
+
+app.delete('/api/v1/projects/:project_id/palettes/:id', (request, response) => {
+  const { id } = request.params
+
+  database('palettes').where('id', id).del()
+    .then(id => response.json({message: `Palette with id ${id} was deleted`}))
+    .catch(error => response.status(500).json({error: error.message}))
 })
 
 
