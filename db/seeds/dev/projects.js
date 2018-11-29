@@ -14,7 +14,6 @@ const projectsData = [
 ];
 
 const createPalette = (knex, palette) => {
-  console.log(palette)
   return knex('palettes').insert(palette)
 }
 
