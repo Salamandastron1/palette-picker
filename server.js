@@ -1,6 +1,5 @@
 const express = require('express')
 const app = express()
-const path = require('path')
 const bodyParser = require('body-parser')
 const environment = process.env.NODE_ENV || 'development'
 const config = require('./knexfile')[environment]
@@ -94,6 +93,6 @@ app.delete('/api/v1/projects/:project_id/palettes/:id', (request, response) => {
 })
 
 
-app.listen(app.get('PORT'), () => {
-  console.log(`app is running on ${app.get('PORT')}`);
+app.listen(app.get('port'), () => {
+  console.log(`app is running on ${app.get('port')}`);
 });
