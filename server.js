@@ -94,6 +94,6 @@ app.delete('/api/v1/projects/:project_id/palettes/:id', (request, response) => {
 })
 
 
-app.listen(3000, () => {
-  console.log('app is running on 3000');
+app.listen(app.get('PORT'), () => {
+  console.log(`app is running on ${app.get('PORT')}`);
 });
