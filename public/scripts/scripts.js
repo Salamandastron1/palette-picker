@@ -4,11 +4,14 @@ class ColorConstructor {
       projects: []
     }
   }
-
-  setColors = () => {
+  setListeners = () => {
     const colors = document.querySelectorAll('.color')
     const colorListeners = colors.forEach(color => {
       color.addEventListener('click', this.findNewColor)
+    })
+    const locks = document.querySelectorAll('.lock')
+    const lockListeners = locks.forEach(lock => {
+      lock.addEventListener('click', this.toggleLock)
     })
     this.findNewColor()
   }
@@ -39,11 +42,18 @@ class ColorConstructor {
       color.innerText = newColors[i]
     })
   }
+
+  toggleLock = (e) => {
+    const locks = document.querySelectorAll('.locks'); 
+
+    console.log('i worked')
+    //classList.toggle('active')
+  }
 }
 
 const colorConstructor = new ColorConstructor()
 
-colorConstructor.setColors();
+colorConstructor.setListeners();
 
 
 
