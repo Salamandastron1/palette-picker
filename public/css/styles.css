@@ -12,6 +12,7 @@ p {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   justify-items: center;
+  grid-gap: 10px;
 }
 .color {
   align-items: center;
@@ -64,4 +65,7 @@ p {
   height: 30px;
   background-color: inherit;
   border: none;
+}
+.generate {
+  grid-column: 2/ span 3;
 }

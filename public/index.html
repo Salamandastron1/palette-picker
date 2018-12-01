@@ -12,37 +12,27 @@
     </header>
     <main class='main'>
       <section class='color-picker'>
-        
-          <div class="color active">
-            <button class='lock'></button>
-          </div>
-        
-
-          <div class="color active">
-            <button class='lock'></button>
-          </div>
-       
-   
-          <div class="color active">
-            <button class='lock'></button>
-          </div>
-
-     
-          <div class="color active">
-            <button class='lock'></button>
-          </div>
-       
-        
-          <div class="color active">
-            <button class='lock'></button>
-          </div>
-     
+        <div class="color active">
+          <button class='lock'></button>
+        </div>
+        <div class="color active">
+          <button class='lock'></button>
+        </div>
+        <div class="color active">
+          <button class='lock'></button>
+        </div>
+        <div class="color active">
+          <button class='lock'></button>
+        </div>
+        <div class="color active">
+          <button class='lock'></button>
+        </div>
         <button class='generate'>
           Generate New Colors
         </button>
       </section>
-      <form class='form'>
-        <select class='select'>
+      <form class='project-form'>
+        <select class='select1'>
           <option value=''>
             Pick a Project
           </option>
@@ -56,9 +46,20 @@
         <input 
           type='text' 
           class='new-project'
-          placeholder='Start New Project' 
+          placeholder='Start New Project'
         />
         <input type='submit' class='submit'/>
+      </form>
+      <form class='palette-form'>
+        <input 
+          type='text' 
+          value='palette-name' 
+          class='palette-name'
+          placeholder="Enter Palette Name" />
+        <input 
+          type='submit' 
+          class='submit' 
+          value='Save'/>
       </form>
     </main>
     <footer class='footer'>
