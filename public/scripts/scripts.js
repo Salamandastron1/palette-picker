@@ -1,3 +1,5 @@
+const domFuncs = require('./DomFuncs')
+
 class ColorConstructor {
   constructor() {
     this.state = {
@@ -5,12 +7,13 @@ class ColorConstructor {
     }
   }
   setListeners = () => {
-    const generateButton = document.querySelector('.generate')
-    const colorListener = generateButton.addEventListener('click', this.findNewColor)
-    const locks = document.querySelectorAll('.lock')
-    const lockListeners = locks.forEach(lock => {
+    const generateButton = document.querySelector('.generate').addEventListener('click', this.findNewColor)
+    const locksListeners = document.querySelectorAll('.lock').forEach(lock => {
       lock.addEventListener('click', this.toggleLock)
     })
+    const projectListener = document.querySelector('.project-form').addEventListener('submit', this.saveProject)
+    const paletteListener = document.querySelector('.palette-form').addEventListener('submit', this.savePalette)
+
     this.findNewColor()
   }
 
@@ -51,6 +54,44 @@ class ColorConstructor {
     const active = e.target.closest('div')
     e.target.classList.toggle('locked')
     active.classList.toggle('active')
+  }
+
+  savePalette = (e) => {
+    e.preventDefault()
+  }
+
+  saveProject = async (e) => {
+    e.preventDefault()
+    debugger
+    const url = '/api/v1/projects'
+    const project = document.querySelector('.new-project').value
+    const selectForm = document.querySelector('select')
+    const option = document.createElement('option')
+    // const savedProject = await this.serverSend(url, project)
+    option.innerText = 'meow'
+    selectForm.appendChild(option)
+
+  }
+
+  serverSend = async (url, data) => {
+    if(!data === '') {
+      const response = await fetch(url)
+      const newData = response.json()
+
+      return newData
+    } else {
+      const options = {
+        method: 'POST',
+        headers: {
+          "Content-Type": 'application/json;',
+        },
+        body: JSON.stringify(data)
+      }
+      const response = await fetch(url, data);
+      const newData = await response.json();
+
+      return newData
+    }
   }
 }
 
