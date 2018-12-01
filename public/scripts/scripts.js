@@ -5,10 +5,8 @@ class ColorConstructor {
     }
   }
   setListeners = () => {
-    const colors = document.querySelectorAll('.color')
-    const colorListeners = colors.forEach(color => {
-      color.addEventListener('click', this.findNewColor)
-    })
+    const generateButton = document.querySelector('.generate')
+    const colorListener = generateButton.addEventListener('click', this.findNewColor)
     const locks = document.querySelectorAll('.lock')
     const lockListeners = locks.forEach(lock => {
       lock.addEventListener('click', this.toggleLock)
@@ -39,15 +37,20 @@ class ColorConstructor {
 
     activeColors.forEach((color, i) => {
       color.setAttribute('style', `background-color:${newColors[i]};`)
-      color.innerText = newColors[i]
+      if(!color.children[1]) {
+        const text = document.createElement('p')
+        color.append(text)
+        text.innerText = newColors[i]
+      } else {
+        color.children[1].innerText = newColors[i]
+      }
     })
   }
 
   toggleLock = (e) => {
-    const locks = document.querySelectorAll('.locks'); 
-
-    console.log('i worked')
-    //classList.toggle('active')
+    const active = e.target.closest('div')
+    e.target.classList.toggle('locked')
+    active.classList.toggle('active')
   }
 }
 

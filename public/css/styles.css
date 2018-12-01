@@ -53,4 +53,15 @@ p {
   background-size: cover;
   width: 30px;
   height: 30px;
+  background-color: inherit;
+  border: none;
+}
+.locked {
+  background-image: url('../assets/locked.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+  background-color: inherit;
+  border: none;
 }
