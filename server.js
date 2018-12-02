@@ -67,7 +67,6 @@ app.post('/api/v1/projects/:project_id/palettes',(request, response) => {
   const palette = request.body;
   const { project_id } = request.params
 
-  console.log(palette)
   if(!palette) {
     return response.status(422).json({error: 'No palette object submitted'})
   }

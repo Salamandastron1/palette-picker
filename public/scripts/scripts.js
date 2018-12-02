@@ -62,6 +62,7 @@ class ColorConstructor {
 
   getPalettes = async (e) => {
     const value = e.target.value
+    debugger
     const id = document.querySelector(`.${value}`).attributes.data.value
     const palettes = await this.serverSend(`/api/v1/projects/${id}/palettes`)
 
@@ -122,6 +123,13 @@ class ColorConstructor {
     let palette = {
       name: document.querySelector('.palette-name').value
     }
+    const h3 = document.querySelectorAll('h3')
+
+    for(let i = 0; i < h3.length; i++) {
+      if(h3[i] === palette.name) {
+        return alert(`${palette.name} already exists`)
+      }
+    }
 
     for(let i = 0; i < colors.length; i++) {
       const hex = `hex_${i + 1}`
@@ -131,11 +139,11 @@ class ColorConstructor {
     const paletteId = await this.serverSend(url, palette)
 
     palette.id = paletteId
-
     this.createPaletteDom(palette)
   }
 
   saveProject = async () => {
+    debugger
     const url = '/api/v1/projects'
     const project = document.querySelector('.new-project')
 
@@ -147,9 +155,13 @@ class ColorConstructor {
     const returnId = await this.serverSend(url, {name:project.value})
 
     option.innerText = project.value
-    project.value = ''
+    option.className = project.value
     option.setAttribute('data', returnId.id)
     selectForm.appendChild(option)
+    selectForm.value = project.value
+    project.value = ''
+
+    this.deletePalettes()
   }
 
   serverSend = async (url, data) => {
