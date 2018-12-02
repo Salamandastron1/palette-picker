@@ -29,8 +29,7 @@ app.get('/api/v1/projects/:id', (request, response) => {
 
 app.post('/api/v1/projects', (request, response) => {
   const project = request.body;
-  console.log(request)
-  console.log('POST PROJECT')
+  console.log(project)
   if(!project) {
     return response.status(422).json({error: 'No project object provided'});
   };
@@ -57,9 +56,10 @@ app.get('/api/v1/projects/:project_id/palettes', (request, response) => {
   if(!id) {
     return response.status(404).json('Project does not exist')
   }
-
   database('palettes').where('project_id', id).select()
-    .then(palettes => response.json(palettes))
+    .then(palettes => {
+      response.json(palettes)
+    })
     .catch(error => response.status(500).json({error: error.message}))
 })
 
@@ -67,6 +67,7 @@ app.post('/api/v1/projects/:project_id/palettes',(request, response) => {
   const palette = request.body;
   const { project_id } = request.params
 
+  console.log(palette)
   if(!palette) {
     return response.status(422).json({error: 'No palette object submitted'})
   }

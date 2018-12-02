@@ -4,6 +4,12 @@ class ColorConstructor {
       projects: []
     }
   }
+  onloadProcesses = () => {
+    this.setListeners()
+    this.getProjects()
+    this.findNewColor()
+  }
+
   setListeners = () => {
     const generateButton = document.querySelector('.generate').addEventListener('click', this.findNewColor)
     const locksListeners = document.querySelectorAll('.lock').forEach(lock => {
@@ -12,8 +18,7 @@ class ColorConstructor {
     const projectListener = document.querySelectorAll('form').forEach(form => {
       form.addEventListener('submit', this.onSubmit)
     })
-
-    this.findNewColor()
+    const select = document.querySelector('select').addEventListener('change', this.getPalettes)
   }
 
   hexGenerator = () => {
@@ -55,30 +60,100 @@ class ColorConstructor {
     active.classList.toggle('active')
   }
 
-  savePalette = async () => {
-    // const url = `/api/v1/projects/${}`
-    const project = document.querySelector('.new-project').value
+  getPalettes = async (e) => {
+    const value = e.target.value
+    const id = document.querySelector(`.${value}`).attributes.data.value
+    const palettes = await this.serverSend(`/api/v1/projects/${id}/palettes`)
+
+    this.deletePalettes()
+
+    palettes.forEach(palette => {
+      this.createPaletteDom(palette)
+    })
+  }
+
+  createPaletteDom = palette => {
+    const section = document.createElement('section')
+    const h3 = document.createElement('h3')
+    const footer = document.querySelector('footer')
+    const colors = Object.keys(palette).filter(att => {
+      return att.includes('hex')
+    })
+
+    section.setAttribute('data', `${palette.id}`)
+    h3.innerText = palette.name
+    section.append(h3)
+    section.className = 'palette'
+    colors.forEach(color => {
+      const div = document.createElement('div')
+      div.setAttribute('style', `background-color: ${palette[color]};`)
+      div.className = "palette-color"
+      section.append(div)
+    })
+    footer.append(section)
+  }
+
+  deletePalettes = () => {
+    const footer = document.querySelector('footer')
+    while(footer.firstElementChild) {
+      footer.removeChild(footer.firstElementChild)
+    }
+  }
+
+  getProjects = async () => {
+    const projects = await this.serverSend('/api/v1/projects')
     const selectForm = document.querySelector('select')
-    const option = document.createElement('option')
-    const savedProject = await this.serverSend(url, project)
+
+    projects.forEach(project => {
+      const option = document.createElement('option')
+
+      option.innerText = project.name
+      option.setAttribute('data', project.id)
+      option.className = project.name
+      selectForm.append(option)
+    })
+  }
+
+  savePalette = async () => {
+    const project = document.querySelector('select').value
+    const id = document.querySelector(`.${project}`).attributes.data.value
+    const url = `/api/v1/projects/${id}/palettes`
+    const colors = document.querySelectorAll('.color')
+    let palette = {
+      name: document.querySelector('.palette-name').value
+    }
+
+    for(let i = 0; i < colors.length; i++) {
+      const hex = `hex_${i + 1}`
+      palette[hex] = colors[i].innerText
+    }
+
+    const paletteId = await this.serverSend(url, palette)
+
+    palette.id = paletteId
+
+    this.createPaletteDom(palette)
   }
 
   saveProject = async () => {
     const url = '/api/v1/projects'
-    const project = document.querySelector('.new-project').value
+    const project = document.querySelector('.new-project')
+
+    if(project.value === '') {
+      return alert('Projects must have a name')
+    }
     const selectForm = document.querySelector('select')
     const option = document.createElement('option')
-    const savedProject = await this.serverSend(url, project)
+    const returnId = await this.serverSend(url, {name:project.value})
 
-    console.log(savedProject)
-    option.innerText = savedProject.name
+    option.innerText = project.value
+    project.value = ''
+    option.setAttribute('data', returnId.id)
     selectForm.appendChild(option)
   }
 
   serverSend = async (url, data) => {
-    debugger
-    if(data !== '') {
-      const body = JSON.stringify({name: data});
+    if(data !== '' && data) {
       const options = {
           method: 'POST',
           mode: "cors",
@@ -87,7 +162,7 @@ class ColorConstructor {
             'Accept': 'application/json',
             "Content-Type": 'application/json',
           },
-          body: body,
+          body: JSON.stringify(data),
         }
       const response = await fetch(url, options);
       const newData = await response.json();
@@ -113,7 +188,7 @@ class ColorConstructor {
 
 const colorConstructor = new ColorConstructor()
 
-colorConstructor.setListeners();
+colorConstructor.onloadProcesses();
 
 
 
