@@ -1,9 +1,4 @@
 class ColorConstructor {
-  constructor() {
-    this.state = {
-      projects: []
-    }
-  }
   onloadProcesses = () => {
     this.setListeners()
     this.getProjects()
@@ -11,14 +6,17 @@ class ColorConstructor {
   }
 
   setListeners = () => {
-    const generateButton = document.querySelector('.generate').addEventListener('click', this.findNewColor)
-    const locksListeners = document.querySelectorAll('.lock').forEach(lock => {
+    const findOne = value => document.querySelector(value)
+    const findAll = value => document.querySelectorAll(value)
+    
+    findOne('.generate').addEventListener('click', this.findNewColor)
+    findOne('select').addEventListener('change', this.getPalettes)
+    findAll('.lock').forEach(lock => {
       lock.addEventListener('click', this.toggleLock)
     })
-    const projectListener = document.querySelectorAll('form').forEach(form => {
+    findAll('form').forEach(form => {
       form.addEventListener('submit', this.onSubmit)
     })
-    const select = document.querySelector('select').addEventListener('change', this.getPalettes)
   }
 
   hexGenerator = () => {
@@ -76,13 +74,14 @@ class ColorConstructor {
   }
 
   createPaletteDom = palette => {
-    const section = document.createElement('section')
-    const h3 = document.createElement('h3')
+    const create = value => document.createElement(value)
+    const section = create('section')
+    const h3 = create('h3')
     const footer = document.querySelector('footer')
     const colors = Object.keys(palette).filter(att => {
       return att.includes('hex')
     })
-    const button = document.createElement('button')
+    const button = create('button')
 
     button.addEventListener('click', this.deletePalette)
     button.innerText = 'X'
@@ -92,7 +91,7 @@ class ColorConstructor {
     section.append(h3)
     section.className = 'palette'
     colors.forEach(color => {
-      const div = document.createElement('div')
+      const div = create('div')
       div.setAttribute('style', `background-color: ${palette[color]};`)
       div.className = "palette-color"
       div.innerText = `${palette[color]}`
@@ -135,15 +134,17 @@ class ColorConstructor {
   }
 
   savePalette = async () => {
-    const project = document.querySelector('select').value
-    const id = document.querySelector(`.${project}`).attributes.data.value
+    const findAll = value => document.querySelectorAll(value)
+    const find = value => document.querySelector(value)
+    const project = find('select').value
+    const id = find(`.${project}`).attributes.data.value
     const url = `/api/v1/projects/${id}/palettes`
-    const colors = document.querySelectorAll('.color')
+    const colors = findAll('.color')
     let palette = {
-      name: document.querySelector('.palette-name').value,
+      name: find('.palette-name').value,
       method: 'POST'
     }
-    const h3 = document.querySelectorAll('h3')
+    const h3 = findAll('h3')
 
     if(palette.name === '') {
       return alert('Palettes must have a name')
