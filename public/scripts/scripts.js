@@ -62,11 +62,10 @@ class ColorConstructor {
 
   getPalettes = async (e) => {
     const value = e.target.value
-    debugger
     const id = document.querySelector(`.${value}`).attributes.data.value
     const palettes = await this.serverSend(`/api/v1/projects/${id}/palettes`)
 
-    this.deletePalettes()
+    this.removePaletteNodes()
 
     palettes.forEach(palette => {
       this.createPaletteDom(palette)
@@ -80,7 +79,11 @@ class ColorConstructor {
     const colors = Object.keys(palette).filter(att => {
       return att.includes('hex')
     })
+    const button = document.createElement('button')
 
+    button.addEventListener('click', this.deletePalette)
+    button.innerText = 'X'
+    button.className = 'button'
     section.setAttribute('data', `${palette.id}`)
     h3.innerText = palette.name
     section.append(h3)
@@ -91,14 +94,27 @@ class ColorConstructor {
       div.className = "palette-color"
       section.append(div)
     })
+    section.append(button)
     footer.append(section)
   }
 
-  deletePalettes = () => {
+  removePaletteNodes = () => {
     const footer = document.querySelector('footer')
     while(footer.firstElementChild) {
       footer.removeChild(footer.firstElementChild)
     }
+  }
+
+  deletePalette = async e => {
+    debugger
+    const find = value => document.querySelector(value)
+    const section = e.target.closest('section')
+    const projectId = find(`.${find('select').value}`).attributes.data.value
+    const paletteId = section.attributes.data.value
+    
+
+    this.serverSend(`/api/v1/projects/${projectId}/palettes/${paletteId}`, {method: 'DELETE'})
+    section.remove()
   }
 
   getProjects = async () => {
@@ -121,12 +137,13 @@ class ColorConstructor {
     const url = `/api/v1/projects/${id}/palettes`
     const colors = document.querySelectorAll('.color')
     let palette = {
-      name: document.querySelector('.palette-name').value
+      name: document.querySelector('.palette-name').value,
+      method: 'POST'
     }
     const h3 = document.querySelectorAll('h3')
 
     for(let i = 0; i < h3.length; i++) {
-      if(h3[i] === palette.name) {
+      if(h3[i].innerText === palette.name) {
         return alert(`${palette.name} already exists`)
       }
     }
@@ -143,7 +160,6 @@ class ColorConstructor {
   }
 
   saveProject = async () => {
-    debugger
     const url = '/api/v1/projects'
     const project = document.querySelector('.new-project')
 
@@ -152,7 +168,7 @@ class ColorConstructor {
     }
     const selectForm = document.querySelector('select')
     const option = document.createElement('option')
-    const returnId = await this.serverSend(url, {name:project.value})
+    const returnId = await this.serverSend(url, {name:project.value, method: 'POST'})
 
     option.innerText = project.value
     option.className = project.value
@@ -161,13 +177,13 @@ class ColorConstructor {
     selectForm.value = project.value
     project.value = ''
 
-    this.deletePalettes()
+    this.removePaletteNodes()
   }
 
   serverSend = async (url, data) => {
     if(data !== '' && data) {
       const options = {
-          method: 'POST',
+          method: `${data.method}`,
           mode: "cors",
           credentials: "same-origin",
           headers: {
