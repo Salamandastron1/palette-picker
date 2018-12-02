@@ -62,6 +62,9 @@ class ColorConstructor {
 
   getPalettes = async (e) => {
     const value = e.target.value
+    if(value === '') {
+      return
+    }
     const id = document.querySelector(`.${value}`).attributes.data.value
     const palettes = await this.serverSend(`/api/v1/projects/${id}/palettes`)
 
@@ -142,6 +145,9 @@ class ColorConstructor {
     }
     const h3 = document.querySelectorAll('h3')
 
+    if(palette.name === '') {
+      return alert('Palettes must have a name')
+    }
     for(let i = 0; i < h3.length; i++) {
       if(h3[i].innerText === palette.name) {
         return alert(`${palette.name} already exists`)
@@ -162,9 +168,15 @@ class ColorConstructor {
   saveProject = async () => {
     const url = '/api/v1/projects'
     const project = document.querySelector('.new-project')
+    const options = document.querySelectorAll('option')
 
     if(project.value === '') {
       return alert('Projects must have a name')
+    }
+    for(let i = 0; i < options.length; i++) {
+      if(options[i].innerText === project.value) {
+        return alert(`${project.value} already exists`)
+      }
     }
     const selectForm = document.querySelector('select')
     const option = document.createElement('option')
@@ -182,8 +194,10 @@ class ColorConstructor {
 
   serverSend = async (url, data) => {
     if(data !== '' && data) {
+      const method = data.method
+      delete data.method
       const options = {
-          method: `${data.method}`,
+          method,
           mode: "cors",
           credentials: "same-origin",
           headers: {
