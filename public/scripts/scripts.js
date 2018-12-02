@@ -4,6 +4,12 @@ class ColorConstructor {
       projects: []
     }
   }
+  onloadProcesses = () => {
+    this.setListeners()
+    this.getProjects()
+    this.findNewColor()
+  }
+
   setListeners = () => {
     const generateButton = document.querySelector('.generate').addEventListener('click', this.findNewColor)
     const locksListeners = document.querySelectorAll('.lock').forEach(lock => {
@@ -12,8 +18,7 @@ class ColorConstructor {
     const projectListener = document.querySelectorAll('form').forEach(form => {
       form.addEventListener('submit', this.onSubmit)
     })
-
-    this.findNewColor()
+    const select = document.querySelector('select').addEventListener('change', this.getPalettes)
   }
 
   hexGenerator = () => {
@@ -54,30 +59,47 @@ class ColorConstructor {
     e.target.classList.toggle('locked')
     active.classList.toggle('active')
   }
-
+  getPalettes = async () => {
+    const palettes = 
+  }
   savePalette = async () => {
-    // const url = `/api/v1/projects/${}`
     const project = document.querySelector('.new-project').value
     const selectForm = document.querySelector('select')
     const option = document.createElement('option')
     const savedProject = await this.serverSend(url, project)
   }
 
+  getProjects = async () => {
+    const projects = await this.serverSend('/api/v1/projects')
+    const selectForm = document.querySelector('select')
+
+    projects.forEach(project => {
+      const option = document.createElement('option')
+
+      option.innerText = project.name
+      option.setAttribute('data', project.id)
+      selectForm.append(option)
+    })
+  }
   saveProject = async () => {
     const url = '/api/v1/projects'
-    const project = document.querySelector('.new-project').value
+    const project = document.querySelector('.new-project')
+
+    if(project.value === '') {
+      return alert('Projects must have a name')
+    }
     const selectForm = document.querySelector('select')
     const option = document.createElement('option')
-    const savedProject = await this.serverSend(url, project)
+    const returnId = await this.serverSend(url, project.value)
 
-    console.log(savedProject)
-    option.innerText = savedProject.name
+    option.innerText = project.value
+    project.value = ''
+    option.setAttribute('data', returnId.id)
     selectForm.appendChild(option)
   }
 
   serverSend = async (url, data) => {
-    debugger
-    if(data !== '') {
+    if(data !== '' && data) {
       const body = JSON.stringify({name: data});
       const options = {
           method: 'POST',
@@ -113,7 +135,7 @@ class ColorConstructor {
 
 const colorConstructor = new ColorConstructor()
 
-colorConstructor.setListeners();
+colorConstructor.onloadProcesses();
 
 
 

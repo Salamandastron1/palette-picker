@@ -29,8 +29,7 @@ app.get('/api/v1/projects/:id', (request, response) => {
 
 app.post('/api/v1/projects', (request, response) => {
   const project = request.body;
-  console.log(request)
-  console.log('POST PROJECT')
+  console.log(project)
   if(!project) {
     return response.status(422).json({error: 'No project object provided'});
   };
