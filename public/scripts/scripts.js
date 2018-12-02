@@ -1,5 +1,3 @@
-const domFuncs = require('./DomFuncs')
-
 class ColorConstructor {
   constructor() {
     this.state = {
@@ -11,8 +9,9 @@ class ColorConstructor {
     const locksListeners = document.querySelectorAll('.lock').forEach(lock => {
       lock.addEventListener('click', this.toggleLock)
     })
-    const projectListener = document.querySelector('.project-form').addEventListener('submit', this.saveProject)
-    const paletteListener = document.querySelector('.palette-form').addEventListener('submit', this.savePalette)
+    const projectListener = document.querySelectorAll('form').forEach(form => {
+      form.addEventListener('submit', this.onSubmit)
+    })
 
     this.findNewColor()
   }
@@ -56,41 +55,58 @@ class ColorConstructor {
     active.classList.toggle('active')
   }
 
-  savePalette = (e) => {
-    e.preventDefault()
+  savePalette = async () => {
+    // const url = `/api/v1/projects/${}`
+    const project = document.querySelector('.new-project').value
+    const selectForm = document.querySelector('select')
+    const option = document.createElement('option')
+    const savedProject = await this.serverSend(url, project)
   }
 
-  saveProject = async (e) => {
-    e.preventDefault()
-    debugger
+  saveProject = async () => {
     const url = '/api/v1/projects'
     const project = document.querySelector('.new-project').value
     const selectForm = document.querySelector('select')
     const option = document.createElement('option')
-    // const savedProject = await this.serverSend(url, project)
-    option.innerText = 'meow'
-    selectForm.appendChild(option)
+    const savedProject = await this.serverSend(url, project)
 
+    console.log(savedProject)
+    option.innerText = savedProject.name
+    selectForm.appendChild(option)
   }
 
   serverSend = async (url, data) => {
-    if(!data === '') {
-      const response = await fetch(url)
-      const newData = response.json()
-
+    debugger
+    if(data !== '') {
+      const body = JSON.stringify({name: data});
+      const options = {
+          method: 'POST',
+          mode: "cors",
+          credentials: "same-origin",
+          headers: {
+            'Accept': 'application/json',
+            "Content-Type": 'application/json',
+          },
+          body: body,
+        }
+      const response = await fetch(url, options);
+      const newData = await response.json();
+      
       return newData
     } else {
-      const options = {
-        method: 'POST',
-        headers: {
-          "Content-Type": 'application/json;',
-        },
-        body: JSON.stringify(data)
-      }
-      const response = await fetch(url, data);
-      const newData = await response.json();
+      const response = await fetch(url)
+      const newData = await response.json()
 
       return newData
+    }
+  }
+
+  onSubmit = e => {
+    e.preventDefault()
+    if(e.target.className === 'project-form') {
+      this.saveProject()
+    } else {
+      this.savePalette()
     }
   }
 }
