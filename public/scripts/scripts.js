@@ -63,36 +63,40 @@ class ColorConstructor {
   getPalettes = async (e) => {
     const value = e.target.value
     const id = document.querySelector(`.${value}`).attributes.data.value
-    const footer = document.querySelector('footer')
     const palettes = await this.serverSend(`/api/v1/projects/${id}/palettes`)
 
-    this.deletePalettes(footer)
+    this.deletePalettes()
 
     palettes.forEach(palette => {
-      const section = document.createElement('section')
-      const h3 = document.createElement('h3')
-      const colors = Object.keys(palette).filter(att => {
-        return att.includes('hex')
-      })
-
-      section.setAttribute('data', `${palette.id}`)
-      h3.innerText = palette.name
-      section.append(h3)
-      section.className = 'palette'
-      colors.forEach(color => {
-        const div = document.createElement('div')
-        div.setAttribute('style', `background-color: ${palette[color]};`)
-        div.className = "palette-color"
-        section.append(div)
-      })
-      footer.append(section)
+      this.createPaletteDom(palette)
     })
   }
 
-  deletePalettes = (domNode) => {
-    debugger
-    while(domNode.firstchild) {
-      domNode.removeChild(domNode.firstchild)
+  createPaletteDom = palette => {
+    const section = document.createElement('section')
+    const h3 = document.createElement('h3')
+    const footer = document.querySelector('footer')
+    const colors = Object.keys(palette).filter(att => {
+      return att.includes('hex')
+    })
+
+    section.setAttribute('data', `${palette.id}`)
+    h3.innerText = palette.name
+    section.append(h3)
+    section.className = 'palette'
+    colors.forEach(color => {
+      const div = document.createElement('div')
+      div.setAttribute('style', `background-color: ${palette[color]};`)
+      div.className = "palette-color"
+      section.append(div)
+    })
+    footer.append(section)
+  }
+
+  deletePalettes = () => {
+    const footer = document.querySelector('footer')
+    while(footer.firstElementChild) {
+      footer.removeChild(footer.firstElementChild)
     }
   }
 
@@ -111,10 +115,24 @@ class ColorConstructor {
   }
 
   savePalette = async () => {
-    const project = document.querySelector('.new-project').value
-    const selectForm = document.querySelector('select')
-    const option = document.createElement('option')
-    const savedProject = await this.serverSend(url, project)
+    const project = document.querySelector('select').value
+    const id = document.querySelector(`.${project}`).attributes.data.value
+    const url = `/api/v1/projects/${id}/palettes`
+    const colors = document.querySelectorAll('.color')
+    let palette = {
+      name: document.querySelector('.palette-name').value
+    }
+
+    for(let i = 0; i < colors.length; i++) {
+      const hex = `hex_${i + 1}`
+      palette[hex] = colors[i].innerText
+    }
+
+    const paletteId = await this.serverSend(url, palette)
+
+    palette.id = paletteId
+
+    this.createPaletteDom(palette)
   }
 
   saveProject = async () => {
@@ -126,7 +144,7 @@ class ColorConstructor {
     }
     const selectForm = document.querySelector('select')
     const option = document.createElement('option')
-    const returnId = await this.serverSend(url, project.value)
+    const returnId = await this.serverSend(url, {name:project.value})
 
     option.innerText = project.value
     project.value = ''
@@ -135,9 +153,7 @@ class ColorConstructor {
   }
 
   serverSend = async (url, data) => {
-    debugger
     if(data !== '' && data) {
-      const body = JSON.stringify({name: data});
       const options = {
           method: 'POST',
           mode: "cors",
@@ -146,7 +162,7 @@ class ColorConstructor {
             'Accept': 'application/json',
             "Content-Type": 'application/json',
           },
-          body: body,
+          body: JSON.stringify(data),
         }
       const response = await fetch(url, options);
       const newData = await response.json();
