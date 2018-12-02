@@ -59,14 +59,41 @@ class ColorConstructor {
     e.target.classList.toggle('locked')
     active.classList.toggle('active')
   }
-  getPalettes = async () => {
-    const palettes = 
+
+  getPalettes = async (e) => {
+    const value = e.target.value
+    const id = document.querySelector(`.${value}`).attributes.data.value
+    const footer = document.querySelector('footer')
+    const palettes = await this.serverSend(`/api/v1/projects/${id}/palettes`)
+
+    this.deletePalettes(footer)
+
+    palettes.forEach(palette => {
+      const section = document.createElement('section')
+      const h3 = document.createElement('h3')
+      const colors = Object.keys(palette).filter(att => {
+        return att.includes('hex')
+      })
+
+      section.setAttribute('data', `${palette.id}`)
+      h3.innerText = palette.name
+      section.append(h3)
+      section.className = 'palette'
+      colors.forEach(color => {
+        const div = document.createElement('div')
+        div.setAttribute('style', `background-color: ${palette[color]};`)
+        div.className = "palette-color"
+        section.append(div)
+      })
+      footer.append(section)
+    })
   }
-  savePalette = async () => {
-    const project = document.querySelector('.new-project').value
-    const selectForm = document.querySelector('select')
-    const option = document.createElement('option')
-    const savedProject = await this.serverSend(url, project)
+
+  deletePalettes = (domNode) => {
+    debugger
+    while(domNode.firstchild) {
+      domNode.removeChild(domNode.firstchild)
+    }
   }
 
   getProjects = async () => {
@@ -78,9 +105,18 @@ class ColorConstructor {
 
       option.innerText = project.name
       option.setAttribute('data', project.id)
+      option.className = project.name
       selectForm.append(option)
     })
   }
+
+  savePalette = async () => {
+    const project = document.querySelector('.new-project').value
+    const selectForm = document.querySelector('select')
+    const option = document.createElement('option')
+    const savedProject = await this.serverSend(url, project)
+  }
+
   saveProject = async () => {
     const url = '/api/v1/projects'
     const project = document.querySelector('.new-project')
@@ -99,6 +135,7 @@ class ColorConstructor {
   }
 
   serverSend = async (url, data) => {
+    debugger
     if(data !== '' && data) {
       const body = JSON.stringify({name: data});
       const options = {
