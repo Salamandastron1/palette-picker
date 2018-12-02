@@ -92,6 +92,7 @@ class ColorConstructor {
       const div = document.createElement('div')
       div.setAttribute('style', `background-color: ${palette[color]};`)
       div.className = "palette-color"
+      div.innerText = `${palette[color]}`
       section.append(div)
     })
     section.append(button)
@@ -106,7 +107,6 @@ class ColorConstructor {
   }
 
   deletePalette = async e => {
-    debugger
     const find = value => document.querySelector(value)
     const section = e.target.closest('section')
     const projectId = find(`.${find('select').value}`).attributes.data.value
