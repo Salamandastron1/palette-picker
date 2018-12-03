@@ -1,9 +1,4 @@
 class ColorConstructor {
-  constructor() {
-    this.state = {
-      projects: []
-    }
-  }
   onloadProcesses = () => {
     this.setListeners()
     this.getProjects()
@@ -11,14 +6,17 @@ class ColorConstructor {
   }
 
   setListeners = () => {
-    const generateButton = document.querySelector('.generate').addEventListener('click', this.findNewColor)
-    const locksListeners = document.querySelectorAll('.lock').forEach(lock => {
+    const findOne = value => document.querySelector(value)
+    const findAll = value => document.querySelectorAll(value)
+    
+    findOne('.generate').addEventListener('click', this.findNewColor)
+    findOne('select').addEventListener('change', this.getPalettes)
+    findAll('.lock').forEach(lock => {
       lock.addEventListener('click', this.toggleLock)
     })
-    const projectListener = document.querySelectorAll('form').forEach(form => {
+    findAll('form').forEach(form => {
       form.addEventListener('submit', this.onSubmit)
     })
-    const select = document.querySelector('select').addEventListener('change', this.getPalettes)
   }
 
   hexGenerator = () => {
@@ -62,10 +60,13 @@ class ColorConstructor {
 
   getPalettes = async (e) => {
     const value = e.target.value
+    if(value === '') {
+      return
+    }
     const id = document.querySelector(`.${value}`).attributes.data.value
     const palettes = await this.serverSend(`/api/v1/projects/${id}/palettes`)
 
-    this.deletePalettes()
+    this.removePaletteNodes()
 
     palettes.forEach(palette => {
       this.createPaletteDom(palette)
@@ -73,31 +74,49 @@ class ColorConstructor {
   }
 
   createPaletteDom = palette => {
-    const section = document.createElement('section')
-    const h3 = document.createElement('h3')
+    const create = value => document.createElement(value)
+    const section = create('section')
+    const h3 = create('h3')
     const footer = document.querySelector('footer')
     const colors = Object.keys(palette).filter(att => {
       return att.includes('hex')
     })
+    const button = create('button')
 
+    button.addEventListener('click', this.deletePalette)
+    button.innerText = 'X'
+    button.className = 'button'
     section.setAttribute('data', `${palette.id}`)
     h3.innerText = palette.name
     section.append(h3)
     section.className = 'palette'
     colors.forEach(color => {
-      const div = document.createElement('div')
+      const div = create('div')
       div.setAttribute('style', `background-color: ${palette[color]};`)
       div.className = "palette-color"
+      div.innerText = `${palette[color]}`
       section.append(div)
     })
+    section.append(button)
     footer.append(section)
   }
 
-  deletePalettes = () => {
+  removePaletteNodes = () => {
     const footer = document.querySelector('footer')
     while(footer.firstElementChild) {
       footer.removeChild(footer.firstElementChild)
     }
+  }
+
+  deletePalette = async e => {
+    const find = value => document.querySelector(value)
+    const section = e.target.closest('section')
+    const projectId = find(`.${find('select').value}`).attributes.data.value
+    const paletteId = section.attributes.data.value
+    
+
+    this.serverSend(`/api/v1/projects/${projectId}/palettes/${paletteId}`, {method: 'DELETE'})
+    section.remove()
   }
 
   getProjects = async () => {
@@ -115,12 +134,25 @@ class ColorConstructor {
   }
 
   savePalette = async () => {
-    const project = document.querySelector('select').value
-    const id = document.querySelector(`.${project}`).attributes.data.value
+    const findAll = value => document.querySelectorAll(value)
+    const find = value => document.querySelector(value)
+    const project = find('select').value
+    const id = find(`.${project}`).attributes.data.value
     const url = `/api/v1/projects/${id}/palettes`
-    const colors = document.querySelectorAll('.color')
+    const colors = findAll('.color')
     let palette = {
-      name: document.querySelector('.palette-name').value
+      name: find('.palette-name').value,
+      method: 'POST'
+    }
+    const h3 = findAll('h3')
+
+    if(palette.name === '') {
+      return alert('Palettes must have a name')
+    }
+    for(let i = 0; i < h3.length; i++) {
+      if(h3[i].innerText === palette.name) {
+        return alert(`${palette.name} already exists`)
+      }
     }
 
     for(let i = 0; i < colors.length; i++) {
@@ -131,31 +163,42 @@ class ColorConstructor {
     const paletteId = await this.serverSend(url, palette)
 
     palette.id = paletteId
-
     this.createPaletteDom(palette)
   }
 
   saveProject = async () => {
     const url = '/api/v1/projects'
     const project = document.querySelector('.new-project')
+    const options = document.querySelectorAll('option')
 
     if(project.value === '') {
       return alert('Projects must have a name')
     }
+    for(let i = 0; i < options.length; i++) {
+      if(options[i].innerText === project.value) {
+        return alert(`${project.value} already exists`)
+      }
+    }
     const selectForm = document.querySelector('select')
     const option = document.createElement('option')
-    const returnId = await this.serverSend(url, {name:project.value})
+    const returnId = await this.serverSend(url, {name:project.value, method: 'POST'})
 
     option.innerText = project.value
-    project.value = ''
+    option.className = project.value
     option.setAttribute('data', returnId.id)
     selectForm.appendChild(option)
+    selectForm.value = project.value
+    project.value = ''
+
+    this.removePaletteNodes()
   }
 
   serverSend = async (url, data) => {
     if(data !== '' && data) {
+      const method = data.method
+      delete data.method
       const options = {
-          method: 'POST',
+          method,
           mode: "cors",
           credentials: "same-origin",
           headers: {
