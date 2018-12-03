@@ -109,6 +109,7 @@ class ColorConstructor {
   }
 
   deletePalette = async e => {
+    
     const find = value => document.querySelector(value)
     const section = e.target.closest('section')
     const projectId = find(`.${find('select').value}`).attributes.data.value
@@ -162,7 +163,7 @@ class ColorConstructor {
 
     const paletteId = await this.serverSend(url, palette)
 
-    palette.id = paletteId
+    palette.id = paletteId.id
     this.createPaletteDom(palette)
   }
 
