@@ -19,14 +19,6 @@ app.get('/api/v1/projects',(request, response) => {
     })
 })
 
-app.get('/api/v1/projects/:id', (request, response) => {
-  const { id } = request.params
-
-  database('projects').where('id', id).select()
-    .then(project => response.json(project))
-    .catch(error => response.status(500).json({error: error.message}))
-});
-
 app.post('/api/v1/projects', (request, response) => {
   const project = request.body;
   console.log(project)
