@@ -41,4 +41,4 @@ Coming soon!
 
 ### Contributors
 
-Tim Garrity: [Github](https://github.com/Salamandastron1) <br>
+Tim Garrity: [Github](https://github.com/Salamandastron1) <br> 
