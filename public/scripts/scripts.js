@@ -94,7 +94,6 @@ class ColorConstructor {
       const div = create('div')
       div.setAttribute('style', `background-color: ${palette[color]};`)
       div.className = "palette-color"
-      div.innerText = `${palette[color]}`
       section.append(div)
     })
     section.append(button)

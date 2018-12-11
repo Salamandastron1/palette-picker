@@ -32,20 +32,20 @@ p {
 }
 .palette-color {
   align-items: center;
-  background: blue;
   border-radius: 50%;
   display: flex;
-  height: 200px;
   justify-content: center;
-  width: 200px;
+  height: 10px;
+  width: 10px;
 }
 .footer {
   display: grid;
-  grid-template-columns: auto;
+  grid-template-columns: repeat(5, 1fr);
 }
 .palette {
   display: flex;
-  position: relative;
+  grid-column: 2 / span 3;
+  justify-content: center;
 }
 
 .lock {
@@ -68,4 +68,18 @@ p {
 }
 .generate {
   grid-column: 2/ span 3;
+}
+
+.project-form {
+  display: grid;
+  justify-content: start;
+  grid-gap: 20px;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin: 20px;
+}
+
+.palette-form {
+  display: flex;
+  justify-content: center;
+  margin: 20px;
 }
