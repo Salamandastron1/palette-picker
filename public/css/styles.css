@@ -1,5 +1,10 @@
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
 h1 {
-  font-family: 'Caveat Brush', cursive;
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
   text-align: center;
   color: #32d0b5;
   font-size: 4em;
@@ -10,9 +15,6 @@ p {
 }
 .color-picker {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  justify-items: center;
-  grid-gap: 10px;
 }
 .color {
   align-items: center;
@@ -21,6 +23,13 @@ p {
   height: 200px;
   justify-content: center;
   width: 200px;
+  margin: 10px;
+}
+.card-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  padding: 2rem 0 2.5rem 0;
 }
 .directions {
   grid-column: 2 / span 3;
