@@ -4,7 +4,7 @@
     <title>Palette Picker</title>
     <link rel="stylesheet" type="text/css" href="./css/normalize.css">
     <link rel="stylesheet" type="text/css" href="./css/styles.css">
-    <link href="https://fonts.googleapis.com/css?family=Caveat+Brush" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,900" rel="stylesheet">
   </head>
   <body>
     <header>
@@ -12,48 +12,52 @@
     </header>
     <main class='main'>
       <section class='color-picker'>
-        <div class="color active">
-          <button class='lock'></button>
-        </div>
-        <div class="color active">
-          <button class='lock'></button>
-        </div>
-        <div class="color active">
-          <button class='lock'></button>
-        </div>
-        <div class="color active">
-          <button class='lock'></button>
-        </div>
-        <div class="color active">
-          <button class='lock'></button>
-        </div>
+        <section class='card-container'>
+          <div class="color active">
+            <button class='lock'></button>
+          </div>
+          <div class="color active">
+            <button class='lock'></button>
+          </div>
+          <div class="color active">
+            <button class='lock'></button>
+          </div>
+          <div class="color active">
+            <button class='lock'></button>
+          </div>
+          <div class="color active">
+            <button class='lock'></button>
+          </div>
+        </section>
         <button class='generate'>
           Generate New Colors
         </button>
       </section>
-      <form class='project-form'>
-        <select class='select'>
-          <option value=''>
-            Pick a Project
-          </option>
-        </select>
-        <input 
-          type='text' 
-          class='new-project'
-          placeholder='Start New Project'
-        />
-        <input type='submit' class='submit'/>
-      </form>
-      <form class='palette-form'>
-        <input 
-          type='text' 
-          class='palette-name'
-          placeholder="Enter Palette Name" />
-        <input 
-          type='submit' 
-          class='submit' 
-          value='Save'/>
-      </form>
+      <section class='forms'>
+        <form class='project-form'>
+          <select class='select'>
+            <option value=''>
+              Pick a Project
+            </option>
+          </select>
+          <input 
+            type='text' 
+            class='new-project'
+            placeholder='Start New Project'
+          />
+          <input type='submit' class='submit'/>
+        </form>
+        <form class='palette-form'>
+          <input 
+            type='text' 
+            class='palette-name'
+            placeholder="Enter Palette Name" />
+          <input 
+            type='submit' 
+            class='submit' 
+            value='Save'/>
+        </form>
+      </section>
     </main>
     <footer class='footer'>
     </footer>
