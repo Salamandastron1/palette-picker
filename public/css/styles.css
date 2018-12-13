@@ -1,17 +1,23 @@
-body {
+html, body {
   font-family: 'Roboto', sans-serif;
+  height: 100vh;
 }
 
 h1 {
   font-family: 'Roboto', sans-serif;
   font-weight: bold;
   text-align: center;
-  color: #32d0b5;
+  color: #2764de;
   font-size: 4em;
-  text-shadow: 4px 1px 2px grey;
+  text-shadow: 4px 1px 2px #c8b7b7;
 }
 p {
   margin: 0;
+}
+
+input {
+  text-align: center;
+  border-radius: 5px;
 }
 .color-picker {
   display: grid;
@@ -79,21 +85,39 @@ p {
 }
 .generate {
   justify-self: center;
+  background: #2764de;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
 }
 
 .project-form {
-  display: flex;
-  justify-content: space-evenly;
-  grid-gap: 20px;
+  display: grid;
   margin: 20px;
-  flex-flow: row wrap;
+  justify-content: center;
 }
 
 .palette-form {
   display: flex;
-  justify-content: space-evenly;
   grid-gap: 20px;
   margin: 20px;
   flex-flow: row wrap;
   margin: 20px;
+}
+.submit {
+  background: #2764de;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 7px;
+}
+
+.select {
+  background: #2764de;
+  border: none;
+  color: white;
+  padding: 5px;
 }
