@@ -82,15 +82,18 @@ p {
 }
 
 .project-form {
-  display: grid;
-  justify-content: start;
+  display: flex;
+  justify-content: space-evenly;
   grid-gap: 20px;
-  grid-template-columns: 1fr 1fr 1fr;
   margin: 20px;
+  flex-flow: row wrap;
 }
 
 .palette-form {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
+  grid-gap: 20px;
+  margin: 20px;
+  flex-flow: row wrap;
   margin: 20px;
 }
