@@ -16,7 +16,7 @@ class ColorConstructor {
     })
     findAll('form').forEach(form => {
       form.addEventListener('submit', this.onSubmit)
-    })
+    }) 
   }
 
   hexGenerator = () => {
