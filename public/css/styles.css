@@ -5,7 +5,9 @@ html, body {
   font-family: 'Roboto', sans-serif;
   height: 100vh;
 }
-
+header {
+  margin: 20px;
+}
 h1 {
   font-family: 'Roboto', sans-serif;
   font-weight: bold;
@@ -13,6 +15,7 @@ h1 {
   color: #2764de;
   font-size: 4em;
   text-shadow: 4px 1px 2px #c8b7b7;
+  margin: 0;
 }
 p {
   margin: 0;
@@ -94,11 +97,13 @@ input {
   border-radius: 8px;
   border: none;
 }
-
+.new-project {
+    margin-right: 10px;
+}
 .project-form {
-  display: grid;
+  display: flex;
   margin: 20px;
-  justify-content: center;
+  justify-content: start;
 }
 
 .palette-form {
@@ -117,10 +122,14 @@ input {
   align-items: center;
   padding: 7px;
 }
+.palette-name {
+    margin-right: 10px;
+}
 
 .select {
   background: #2764de;
   border: none;
   color: white;
   padding: 5px;
+  margin-right: 10px;
 }
