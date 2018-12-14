@@ -1,4 +1,7 @@
 class ColorConstructor {
+  constructor() {
+    
+  }
   function onloadProcesses() {
     this.setListeners()
     this.getProjects()
