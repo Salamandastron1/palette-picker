@@ -140,4 +140,7 @@ input {
   .submit {
     margin-top: 10px;
   }
+  input {
+    margin-top: 10px;
+  }
 }
