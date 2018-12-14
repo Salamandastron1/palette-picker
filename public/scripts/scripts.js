@@ -232,6 +232,3 @@ class ColorConstructor {
 const colorConstructor = new ColorConstructor()
 
 colorConstructor.onloadProcesses();
-
-
-

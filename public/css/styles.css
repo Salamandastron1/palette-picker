@@ -6,8 +6,9 @@ html, body {
   height: 100vh;
 }
 header {
-  margin: 20px;
+  margin: 10px 0 10px 0;
 }
+
 h1 {
   font-family: 'Roboto', sans-serif;
   font-weight: bold;
@@ -104,6 +105,7 @@ input {
   display: flex;
   margin: 20px;
   justify-content: start;
+  flex-flow: row wrap;
 }
 
 .palette-form {
@@ -132,4 +134,13 @@ input {
   color: white;
   padding: 5px;
   margin-right: 10px;
+}
+
+@media (min-width: 320px) and (max-width: 417px){
+  .submit {
+    margin-top: 10px;
+  }
+  input {
+    margin-top: 10px;
+  }
 }
