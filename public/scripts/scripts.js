@@ -1,7 +1,4 @@
 class ColorConstructor {
-  constructor() {
-    
-  }
   onloadProcesses = () => {
     this.setListeners()
     this.getProjects()
