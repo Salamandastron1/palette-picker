@@ -9,7 +9,8 @@ Colors choices are saved to a project on the backend server so you can come back
 
 ### Primary Technologie(s)
 * Express.js
-* Vanilla Javascript (required, gotta flex the ol' DOM skills)
+* Node.js
+* Vanilla Javascript
 * PostGresSQL Database
 
 ### Inspiration
