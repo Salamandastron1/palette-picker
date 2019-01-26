@@ -155,11 +155,16 @@ input {
     margin-top: 10px;
   }
   h1 {
-    font-size: 3em;
+    font-size: 2em;
+  }
+  header {
+    margin: 0;
   }
   .color {
     height: 125px;
     width: 125px;
+    margin: 0;
+    margin-bottom: 10px;
   }
   .submit {
     margin-top: 10px;
