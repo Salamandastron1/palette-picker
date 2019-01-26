@@ -151,6 +151,9 @@ class ColorConstructor {
     const findAll = value => document.querySelectorAll(value)
     const find = value => document.querySelector(value)
     const project = find('select').value
+    if(!project) {
+      return alert('Please choose or create a project to save a palette')
+    }
     const id = find(`.${project}`).attributes.data.value
     const url = `/api/v1/projects/${id}/palettes`
     const colors = findAll('.color')
@@ -159,6 +162,12 @@ class ColorConstructor {
       method: 'POST'
     }
     const h3 = findAll('h3')
+
+    palette.name.trim().split('').forEach(char => {
+      if(char === ' ') {
+        char = '-';
+      }
+    }).join('');
 
     if(palette.name === '') {
       return alert('Palettes must have a name')
