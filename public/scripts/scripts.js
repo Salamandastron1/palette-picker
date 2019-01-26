@@ -90,10 +90,11 @@ class ColorConstructor {
   }
 
   createPaletteDom(palette) {
-    const create = value => document.createElement(value)
-    const section = create('section')
-    const h3 = create('h3')
-    const footer = document.querySelector('footer')
+    const create = value => document.createElement(value);
+    const section = create('section');
+    const h3 = create('h3');
+    const article = create('article');
+    const footer = document.querySelector('footer');
     const colors = Object.keys(palette).filter(att => {
       return att.includes('hex')
     })
@@ -103,6 +104,7 @@ class ColorConstructor {
     button.innerText = 'X'
     button.className = 'button'
     section.setAttribute('data', `${palette.id}`)
+    article.className = 'palette-colors';
     h3.innerText = palette.name
     section.append(h3)
     section.className = 'palette'
@@ -110,10 +112,11 @@ class ColorConstructor {
       const div = create('div')
       div.setAttribute('style', `background-color: ${palette[color]};`)
       div.className = "palette-color"
-      section.append(div)
+      article.append(div)
     })
-    section.append(button)
-    footer.append(section)
+    section.append(article);
+    section.append(button);
+    footer.append(section);
   }
 
   removePaletteNodes() {
@@ -156,16 +159,19 @@ class ColorConstructor {
     }
     const id = find(`.${project}`).attributes.data.value
     const url = `/api/v1/projects/${id}/palettes`
-    const colors = findAll('.color')
+    const foundPalette = find('.palette-name');
+    const colors = findAll('.color');
     let palette = {
-      name: find('.palette-name').value,
+      name: foundPalette.value,
       method: 'POST'
     }
     const h3 = findAll('h3')
 
-    palette.name.trim().split('').forEach(char => {
+    palette.name = palette.name.trim().split('').map(char => {
       if(char === ' ') {
-        char = '-';
+        return char = '-';
+      } else {
+        return char
       }
     }).join('');
 
@@ -186,6 +192,7 @@ class ColorConstructor {
     const paletteId = await this.serverSend(url, palette)
 
     palette.id = paletteId.id
+    foundPalette.value = ''
     this.createPaletteDom(palette)
   }
 
