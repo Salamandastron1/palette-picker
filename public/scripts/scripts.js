@@ -75,7 +75,7 @@ class ColorConstructor {
   }
 
   async getPalettes(e) {
-    const value = e.target.value
+    const { value } = e.target
     if(value === '') {
       return
     }
@@ -183,25 +183,34 @@ class ColorConstructor {
   async saveProject() {
     const url = '/api/v1/projects'
     const project = document.querySelector('.new-project')
+    const value = project.value.trim().split('').map(char => {
+      console.log(char, 'hey')
+      if(char === ' ') {
+        return char = '-'
+      } else {
+        return char
+      }
+    }).join('')
+    console.log(value)
     const options = document.querySelectorAll('option')
 
     if(project.value === '') {
       return alert('Projects must have a name')
     }
     for(let i = 0; i < options.length; i++) {
-      if(options[i].innerText === project.value) {
-        return alert(`${project.value} already exists`)
+      if(options[i].innerText === value) {
+        return alert(`${value} already exists`)
       }
     }
     const selectForm = document.querySelector('select')
     const option = document.createElement('option')
-    const returnId = await this.serverSend(url, {name:project.value, method: 'POST'})
+    const returnId = await this.serverSend(url, {name:value, method: 'POST'})
 
-    option.innerText = project.value
-    option.className = project.value
+    option.innerText = value
+    option.className = value
     option.setAttribute('data', returnId.id)
     selectForm.appendChild(option)
-    selectForm.value = project.value
+    selectForm.value = value
     project.value = ''
 
     this.removePaletteNodes()
