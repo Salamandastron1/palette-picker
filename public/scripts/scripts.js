@@ -201,8 +201,8 @@ class ColorConstructor {
     const project = document.querySelector('.new-project')
     const value = project.value.trim().split('').map(char => {
       console.log(char, 'hey')
-      if(char === ' ') {
-        return char = '-'
+      if(char === ' ' || char === '-') {
+        return char = '_'
       } else {
         return char
       }
