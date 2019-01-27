@@ -208,7 +208,7 @@ class ColorConstructor {
     }).join('')
     const options = document.querySelectorAll('option')
 
-    if(project.value === '') {
+    if(value === '') {
       return alert('Projects must have a name')
     }
     for(let i = 0; i < options.length; i++) {
