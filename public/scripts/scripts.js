@@ -244,6 +244,7 @@ class ColorConstructor {
           },
           body: JSON.stringify(data),
         }
+      console.log(options)
       const response = await fetch(url, options);
       const newData = await response.json();
       
