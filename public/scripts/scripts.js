@@ -200,14 +200,12 @@ class ColorConstructor {
     const url = '/api/v1/projects'
     const project = document.querySelector('.new-project')
     const value = project.value.trim().split('').map(char => {
-      console.log(char, 'hey')
       if(char === ' ' || char === '-') {
         return char = '_'
       } else {
         return char
       }
     }).join('')
-    console.log(value)
     const options = document.querySelectorAll('option')
 
     if(project.value === '') {
@@ -246,6 +244,7 @@ class ColorConstructor {
           },
           body: JSON.stringify(data),
         }
+      console.log(options)
       const response = await fetch(url, options);
       const newData = await response.json();
       
