@@ -246,9 +246,7 @@ class ColorConstructor {
         }
       try {
       const response = await fetch(url, options);
-        console.log(response)
         const newData = await response.json();
-        console.log(newData)
         
         return newData
       } catch (error) {
