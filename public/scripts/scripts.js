@@ -244,18 +244,25 @@ class ColorConstructor {
           },
           body: JSON.stringify(data),
         }
-      console.log(options)
+      try {
       const response = await fetch(url, options);
-      console.log(response)
-      const newData = await response.json();
-      console.log(newData)
-      
-      return newData
+        console.log(response)
+        const newData = await response.json();
+        console.log(newData)
+        
+        return newData
+      } catch (error) {
+        console.log(error.message)
+      }
     } else {
-      const response = await fetch(url)
-      const newData = await response.json()
+      try {
+        const response = await fetch(url)
+        const newData = await response.json()
 
-      return newData
+        return newData
+      } catch (error) {
+        console.log(error.message)
+      }
     }
   }
 
