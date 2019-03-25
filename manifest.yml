@@ -1,0 +1,5 @@
+applications:
+- name: color_picker
+  instances: 1
+  random-route: true
+  buildpack: https://github.com/cloudfoundry/nodejs-buildpack
