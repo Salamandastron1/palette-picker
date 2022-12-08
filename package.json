@@ -19,8 +19,8 @@
   },
   "homepage": "https://github.com/Salamandastron1/palette-picker#readme",
   "dependencies": {
-    "body-parser": "^1.18.3",
-    "express": "^4.16.4",
+    "body-parser": "^1.20.1",
+    "express": "^4.18.2",
     "knex": "^0.15.2",
     "pg": "^7.6.1",
     "uuid": "^3.3.2"
