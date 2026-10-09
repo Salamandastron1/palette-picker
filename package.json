@@ -21,9 +21,9 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
-    "knex": "^0.15.2",
+    "knex": "^3.3.0",
     "pg": "^7.6.1",
-    "uuid": "^3.3.2"
+    "uuid": "^14.0.2"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.2.1"
